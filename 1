@@ -1,0 +1,188 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+class CVehicle {
+protected:
+    double x, y; 
+    double price; 
+    double speed; 
+    int year; 
+
+public:
+    virtual void setCoordinates(double xx, double yy) {
+        x = xx;
+        y = yy;
+    }
+
+    virtual void getCoordinates() {
+        cout << "Координаты: (" << x << ", " << y << ")" << endl;
+    }
+
+    virtual void setParameters(double vehiclePrice, double vehicleSpeed, int vehicleYear) {
+        price = vehiclePrice;
+        speed = vehicleSpeed;
+        year = vehicleYear;
+    }
+
+    virtual void getParameters() {
+        cout << "Цена: " << price << endl;
+        cout << "Скорость: " << speed << endl;
+        cout << "Год выпуска: " << year << endl;
+    }
+
+    virtual void displayInfo() = 0; 
+};
+
+class CPlane : public CVehicle {
+private:
+    double altitude; 
+    int passengers; 
+
+public:
+    void setAltitude(double alt) {
+        altitude = alt;
+    }
+
+    void setPassengers(int pass) {
+        passengers = pass;
+    }
+
+    void displayInfo() override {
+        cout << "Самолет:" << endl;
+        getCoordinates();
+        getParameters();
+        cout << "Высота: " << altitude << endl;
+        cout << "Количество пассажиров: " << passengers << endl;
+    }
+};
+
+class CCar : public CVehicle {
+private:
+    int passengers; 
+
+public:
+    void setPassengers(int pass) {
+        passengers = pass;
+    }
+
+    void displayInfo() override {
+        cout << "Машина:" << endl;
+        getCoordinates();
+        getParameters();
+        cout << "Количество пассажиров: " << passengers << endl;
+    }
+};
+
+class CShip : public CVehicle {
+private:
+    int passengers; 
+    string port; 
+
+public:
+    void setPassengers(int pass) {
+        passengers = pass;
+    }
+
+    void setPort(std::string p) {
+        port = p;
+    }
+
+    void displayInfo() override {
+        cout << "Корабль:" << endl;
+        getCoordinates();
+        getParameters();
+        cout << "Количество пассажиров: " << passengers << endl;
+        cout << "Порт приписки: " << port << endl;
+    }
+};
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    vector<CVehicle*> vehicles;
+    int choice;
+
+    do {
+        cout << "1. Добавить самолет" << endl;
+        cout << "2. Добавить машину" << endl;
+        cout << "3. Добавить корабль" << endl;
+        cout << "4. Дисплей" << endl;
+        cout << "0. Выйти" << endl;
+        cout << "Введите число: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: {
+            CPlane* plane = new CPlane();
+
+            double x, y, price, speed, altitude;
+            int year, passengers;
+
+            cout << "Введите координаты (x y): ";
+            cin >> x >> y;
+            plane->setCoordinates(x, y);
+
+            cout << "Введите цену, скорость, год выпуска, высоту и количество пассажиров: ";
+            cin >> price >> speed >> year >> altitude >> passengers;
+            plane->setParameters(price, speed, year);
+            plane->setAltitude(altitude);
+            plane->setPassengers(passengers);
+
+            vehicles.push_back(plane);
+            break;
+        }
+        case 2: {
+            CCar* car = new CCar();
+
+            double x, y, price, speed;
+            int year, passengers;
+
+            cout << "Введите координаты (x y): ";
+            cin >> x >> y;
+            car->setCoordinates(x, y);
+
+            cout << "Введите цену, скорость, год выпуска и количество пассажиров: ";
+            cin >> price >> speed >> year >> passengers;
+            car->setParameters(price, speed, year);
+            car->setPassengers(passengers);
+
+            vehicles.push_back(car);
+            break;
+        }
+        case 3: {
+            CShip* ship = new CShip();
+            double x, y, price, speed;
+            int year, passengers;
+            string port;
+
+            cout << "Введите координаты (x y): ";
+            cin >> x >> y;
+            ship->setCoordinates(x, y);
+
+            cout << "Введите цену, скорость, год выпуска, количество пассажиров и порт приписки: ";
+            cin >> price >> speed >> year >> passengers >> port;
+            ship->setParameters(price, speed, year);
+            ship->setPassengers(passengers);
+            ship->setPort(port);
+
+            vehicles.push_back(ship);
+            break;
+        }
+        case 4:
+            for (const auto& vehicle : vehicles) {
+                vehicle->displayInfo();
+                cout << endl;
+            }
+            break;
+        default:
+            break;
+        }
+    } while (choice != 0);
+
+    for (const auto& vehicle : vehicles) {
+        delete vehicle;
+    }
+
+    return 0;
+}
