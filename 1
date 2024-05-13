@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 
+// Базовый класс CVehicle
 class CVehicle {
 protected:
     double x, y; 
@@ -11,21 +12,22 @@ protected:
     int year; 
 
 public:
+// Виртуальный метод для установки координат
     virtual void setCoordinates(double xx, double yy) {
         x = xx;
         y = yy;
     }
-
+// Виртуальный метод для получения координат
     virtual void getCoordinates() {
         cout << "Координаты: (" << x << ", " << y << ")" << endl;
     }
-
+// Виртуальный метод для установки параметров (цена, скорость, год выпуска)
     virtual void setParameters(double vehiclePrice, double vehicleSpeed, int vehicleYear) {
         price = vehiclePrice;
         speed = vehicleSpeed;
         year = vehicleYear;
     }
-
+// Виртуальный метод для получения параметров
     virtual void getParameters() {
         cout << "Цена: " << price << endl;
         cout << "Скорость: " << speed << endl;
@@ -34,21 +36,22 @@ public:
 
     virtual void displayInfo() = 0; 
 };
-
+// Класс CPlane, наследующий от CVehicle
 class CPlane : public CVehicle {
 private:
     double altitude; 
     int passengers; 
 
 public:
+  // Метод для установки высоты
     void setAltitude(double alt) {
         altitude = alt;
     }
-
+  // Метод для установки количества пассажиров
     void setPassengers(int pass) {
         passengers = pass;
     }
-
+    // Переопределение метода displayInfo для отображения информации о самоле-те
     void displayInfo() override {
         cout << "Самолет:" << endl;
         getCoordinates();
@@ -57,7 +60,7 @@ public:
         cout << "Количество пассажиров: " << passengers << endl;
     }
 };
-
+// Класс CCar, наследующий от CVehicle
 class CCar : public CVehicle {
 private:
     int passengers; 
@@ -66,7 +69,7 @@ public:
     void setPassengers(int pass) {
         passengers = pass;
     }
-
+// Переопределение метода displayInfo для отображения информации о машине
     void displayInfo() override {
         cout << "Машина:" << endl;
         getCoordinates();
@@ -74,7 +77,7 @@ public:
         cout << "Количество пассажиров: " << passengers << endl;
     }
 };
-
+// Класс CShip, наследующий от CVehicle
 class CShip : public CVehicle {
 private:
     int passengers; 
@@ -85,7 +88,7 @@ public:
         passengers = pass;
     }
 
-    void setPort(std::string p) {
+    void setPort(string p) {
         port = p;
     }
 
@@ -100,7 +103,7 @@ public:
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    vector<CVehicle*> vehicles;
+    vector<CVehicle*> vehicles; // Вектор для хранения объектов транспортных средств
     int choice;
 
     do {
@@ -142,7 +145,7 @@ int main() {
             cin >> x >> y;
             car->setCoordinates(x, y);
 
-            cout << "Введите цену, скорость, год выпуска и количество пассажиров: ";
+            cout << "Введите цену, скорость, год выпуска и количество пассажи-ров: ";
             cin >> price >> speed >> year >> passengers;
             car->setParameters(price, speed, year);
             car->setPassengers(passengers);
@@ -160,7 +163,7 @@ int main() {
             cin >> x >> y;
             ship->setCoordinates(x, y);
 
-            cout << "Введите цену, скорость, год выпуска, количество пассажиров и порт приписки: ";
+            cout << "Введите цену, скорость, год выпуска, количество пассажи-ров и порт приписки: ";
             cin >> price >> speed >> year >> passengers >> port;
             ship->setParameters(price, speed, year);
             ship->setPassengers(passengers);
